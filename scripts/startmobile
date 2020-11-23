@@ -1,0 +1,21 @@
+#!/bin/bash
+
+SESSION="mobile"
+tmux has-session -t $SESSIONNAME &> /dev/null
+
+# Only create tmux session if it doesn't already exist
+if [ $? != 0 ]
+	then
+    tmux new -s $SESSIONNAME -d
+
+    tmux rename-window -t $SESSION:1 'Main'
+    tmux send-keys -t 'Main' 'gotomobile' C-m 'clear' C-m
+
+    # Create new window and start android studio
+    tmux new-window -t $SESSION:2 -n 'Studio'
+    tmux send-keys -t 'Studio' 'gotomobile' C-m 'clear' C-m
+    tmux send-keys 'studio' Enter
+fi
+
+tmux attach-session -t $SESSION:1
+

@@ -3,6 +3,7 @@ colorscheme atlantis
 " colorscheme personal
 
 "spacing for different file types
+filetype plugin indent on 
 autocmd FileType java setlocal ts=4 sts=4 sw=4
 autocmd FileType python setlocal ts=4 sts=4 sw=4
 autocmd FileType html setlocal ts=2 sts=2 sw=2
@@ -32,6 +33,7 @@ set ignorecase            	" Case insensitive matching
 set smartcase		  	" Smart case matching
 set incsearch		  	" Incremental search
 set autowrite             	" Automatically save before commands like :next and :make
+set autoindent			" Automatically indent
 set hlsearch		  	" Highlights matches when searching for words
 
 "Scrolling starts 5 lines away from the top/bottom of the page

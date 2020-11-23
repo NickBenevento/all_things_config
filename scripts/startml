@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SESSIONNAME="mobile"
+SESSIONNAME="ml"
 tmux has-session -t $SESSIONNAME &> /dev/null
 
 if [ $? != 0 ]
@@ -8,7 +8,7 @@ if [ $? != 0 ]
 		tmux new -s $SESSIONNAME -d
     tmux split-window -h
     tmux set-option -w synchronize-panes
-    tmux send-keys -t $SESSIONNAME "cd /home/nbenevento/Documents/school" Enter
+    tmux send-keys -t $SESSIONNAME "cd /home/nbenevento/Documents/school/machine_learning/project2_machine_learning" Enter
     tmux send-keys "clear" Enter
     tmux set-option -w synchronize-panes
 
