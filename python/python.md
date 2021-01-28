@@ -1,5 +1,17 @@
 # Python
 
+## Python Paths and Frustrating Imports
+
+[General Explanation/Instructions](https://towardsdatascience.com/how-to-fix-modulenotfounderror-and-importerror-248ce5b69b1c)
+
+Options to get local python imports to work:
+1. `export PYTHONPATH="${PYTHONPATH}:/path/to/your/project/root"`
+- Run the command in the terminal for a one-session use.
+- Add the above command to your `.bashrc` (and source it) to prevent needing to run it every time.
+- If in a virtual environment, add it to the [virtual_env]/bin/activate
+2. In an IDE like PyCharm, right click the project root and mark it as a `sources root`. Then, run the file as normal.
+3. Create an install script to package the imports (still in progress).
+
 ## Installing Pyenv
 [Github repo](https://github.com/pyenv/pyenv)
 
