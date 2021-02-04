@@ -27,7 +27,7 @@ xz-utils tk-dev libffi-dev liblzma-dev python-openssl git
 ```
 2. Run the [pyenv installer](https://github.com/pyenv/pyenv-installer):
 - `curl https://pyenv.run | bash`
-- `ecec $SHELL`
+- `exec $SHELL`
 - `pyenv update`
 3. Follow the installation instructions to add pyenv to the system path.
 Should be something like:
