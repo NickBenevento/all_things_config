@@ -10,7 +10,10 @@ Options to get local python imports to work:
 - Add the above command to your `.bashrc` (and source it) to prevent needing to run it every time.
 - If in a virtual environment, add it to the [virtual_env]/bin/activate
 2. In an IDE like PyCharm, right click the project root and mark it as a `sources root`. Then, run the file as normal.
-3. Create an install script to package the imports (still in progress).
+3. Create an install script to package the imports (see `setup.py`).
+- Make sure there is an `__init__.py` in each of the folders that you want to use for imports.
+- Make sure to use absolue imports --> `from project_root.folder.file import method`.
+- Run `python setup.py install` to run the install script.
 
 ## Installing Pyenv
 [Github repo](https://github.com/pyenv/pyenv)
