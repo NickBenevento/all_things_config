@@ -2,6 +2,8 @@
 colorscheme atlantis
 " colorscheme personal
 
+syntax on
+
 "spacing for different file types
 filetype plugin indent on 
 autocmd FileType java setlocal ts=4 sts=4 sw=4
