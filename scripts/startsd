@@ -9,8 +9,11 @@ if [ $? != 0 ]
     tmux split-window -h
     tmux set-option -w synchronize-panes
     tmux send-keys -t $SESSIONNAME "gotosd" Enter
+    tmux send-keys "source env/bin/activate" Enter
+    tmux send-keys "source install.sh" Enter
     tmux send-keys "clear" Enter
     tmux set-option -w synchronize-panes
+    tmux selectp -t 0
 
 		
 fi
