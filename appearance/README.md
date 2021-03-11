@@ -40,6 +40,6 @@ To load the profile:
 	visible-name='Personal'
 
 - Copy the string name in the brackets (including the :)
-- Run the following to export ther profile to a file:
+- Run the following to export the profile to a file:
 `$ dconf dump /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/ > terminal-profile.dconf
 
