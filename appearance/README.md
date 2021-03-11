@@ -10,6 +10,7 @@ Firewatch/Firewatch Night
 ### Ubuntu
 Gnome Tweak Tool:
 	- Applications: Arc-Dark
+		- [Arc-dark theme](https://github.com/horst3180/arc-theme)
 	- Cursor: DMZ-Black
 	- Icons: [Paper](https://snwh.org/paper) ([alternate](https://github.com/snwh/paper-icon-theme))
 
