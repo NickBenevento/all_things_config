@@ -5,7 +5,8 @@
 # Fix directory navigation (absolute paths or something)
 # fix arc-theme installation
 
-DEVELOPMENT_APPS="vim tmux python3 python3-pip autoconf libgtk-3-dev automake"
+DEVELOPMENT_APPS="vim tmux python3 python3-pip curl autoconf libgtk-3-dev automake"
+SCRIPTPATH=`pwd`
 
 read -p "Would you like to fetch the latest updates? [Y/N] " response
 if [ $response = "Y" ] || [ $response = "y" ]; then
@@ -37,21 +38,31 @@ read -p "Would you like to install development tools? [Y/N] " response
 if [ $response = "Y" ] || [ $response = "y" ]; then
   echo "Installing development tools..."
   sudo apt install -y $DEVELOPMENT_APPS
+  curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+  python3 get-pip.py
+  rm get-pip.py
   source ~/.bashrc
-  git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-  pip install --upgrade pip
-  pip install wheel
+  tpm=false
+  if [ -d ~/.tmux/plugins/tpm/ ]; then
+    echo "Tmux tpm already installed."
+  else
+      tpm=true
+      git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+  fi
+  pip3 install --upgrade pip
   echo "Done"
-  echo "(Note: Make sure to open up a new tmux shell, and do: \`[prefix] Shift+I\` to install plugins)"
+  if [ $tpm = "true" ]; then
+    echo "(Note: Make sure to open up a new tmux shell, and do: \`[prefix] Shift+I\` to install plugins)"
+  fi
 fi
 
 read -p "Would you like to copy appearance files (colorschemes, terminal profile, etc.)? [Y/N] " response
 if [ $response = "Y" ] || [ $response = "y" ]; then
   cd appearance/colorschemes
-  mkdir ~/.vim
-  mkdir ~/.vim/colors
-  cp atlantis.vim ~/.vim/colors
-  cp personal.vim ~/.vim/colors
+  [ -d ~/.vim ] && echo ".vim directory already present." || mkdir ~/.vim
+  [ -d ~/.vim/colors ] && echo "vim colors directory already present." || mkdir ~/.vim/colors
+  [ -f ~/.vim/colors/atlantis.vim ] && echo "atlantis colorscheme already present." || cp atlantis.vim ~/.vim/colors
+  [ -f ~/.vim/colors/personal.vim ] && echo "personal colorscheme already present." || cp personal.vim ~/.vim/colors
   cd ..
   # Load the terminal profile colorscheme
   dconf load /org/gnome/terminal/legacy/profiles:/:1430663d-083b-4737-a7f5-8378cc8226d1/ < terminal-profile.dconf
@@ -60,9 +71,21 @@ if [ $response = "Y" ] || [ $response = "y" ]; then
   sudo add-apt-repository -u ppa:snwh/ppa
   sudo apt install paper-icon-theme
   # Install arc-dark theme; do this last probably
-  git clone https://github.com/horst3180/arc-theme ~/Downloads/arc-theme --depth 1 && cd ~/Downloads/arc-theme
-  ./autogen.sh --prefix=/usr
-  sudo make install
+  arctheme = "y"
+  if [ -d ~/Downloads/arc-theme ]; then
+    echo "arc-theme directory already present."
+    read -p "Would you like to still install arc-theme? [Y/N] " arctheme
+  else
+    git clone https://github.com/horst3180/arc-theme ~/Downloads/arc-theme --depth 1
+  fi
+  if [ $arctheme = "Y" ] || [ $arctheme = "y" ]; then
+    cd ~/Downloads/arc-theme
+    ./autogen.sh --prefix=/usr --with-gnome=3.22
+    sudo make install
+  fi
   echo "Done"
 fi
+
+# Return back to the script directory
+cd $SCRIPTPATH
 
