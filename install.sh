@@ -1,11 +1,9 @@
 #!/bin/sh
 
-# To do:
-# Make autocomplete case insensitive
-# Fix directory navigation (absolute paths or something)
-# fix arc-theme installation
+# To Do:
+# Fix terminal color profile not working
 
-DEVELOPMENT_APPS="vim tmux python3 python3-pip curl autoconf libgtk-3-dev automake"
+DEVELOPMENT_APPS="vim tmux python3 python3-pip curl autoconf libgtk-3-dev automake gnome-tweaks"
 SCRIPTPATH=`pwd`
 
 read -p "Would you like to fetch the latest updates? [Y/N] " response
@@ -82,6 +80,7 @@ if [ $response = "Y" ] || [ $response = "y" ]; then
     cd ~/Downloads/arc-theme
     ./autogen.sh --prefix=/usr --with-gnome=3.22
     sudo make install
+    echo "arc-theme installed. Make sure to open up gnome-tweaks and set the theme accordingly."
   fi
   echo "Done"
 fi
