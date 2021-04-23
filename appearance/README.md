@@ -17,7 +17,7 @@ Gnome Tweak Tool:
 
 ### Terminal Profile Colors
 To load the profile:
-`dconf load /org/gnome/terminal/legacy/profiles:/:1430663d-083b-4737-a7f5-8378cc8226d1/ < terminal-profile.dconf`
+`dconf load /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/ < terminal-profile.dconf`
 
 **Background on how to do this**:
 [Instructions](https://gist.github.com/reavon/0bbe99150810baa5623e5f601aa93afc)
