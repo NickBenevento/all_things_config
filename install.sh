@@ -6,6 +6,7 @@
 DEVELOPMENT_APPS="vim tmux python3 python3-pip curl autoconf libgtk-3-dev automake gnome-tweaks"
 SCRIPTPATH=`pwd`
 
+response=
 read -p "Would you like to fetch the latest updates? [Y/N] " response
 if [ $response = "Y" ] || [ $response = "y" ]; then
   echo "Getting the latest updates..."
@@ -13,23 +14,37 @@ if [ $response = "Y" ] || [ $response = "y" ]; then
   echo "Done"
 fi
 
-read -p "Would you like to copy config scripts (.vimrc, bashrc, etc.)? [Y/N] " response
+read -p "Would you like to copy config scripts (.vimrc, bashrc, etc.) and appearance files (colorschemes)? [Y/N] " response
 if [ $response = "Y" ] || [ $response = "y" ]; then
-  echo 'set completion-ignore-case On' | sudo tee -a /etc/inputrc
+  if ! grep -Fxq "set completion-ignore-case On" /etc/inputrc; then
+    echo 'set completion-ignore-case On' | sudo tee -a /etc/inputrc
+  fi
   cd config_files/
   cp -r . ~/
   cd ..
-  echo "Done"
-fi
 
-read -p "Would you like to setup git configs (name, default editor, etc)? [Y/N] " response
-if [ $response = "Y" ] || [ $response = "y" ]; then
-  read -p "Email: " email
-  read -p "Name: " name
-  git config --global user.email $email
-  git config --global user.name $name
-  git config --global core.editor "vim"
-  echo "Done."
+  # VIM COLORSCHEMES
+  cd appearance/colorschemes
+  [ -d ~/.vim ] && echo ".vim directory already present." || mkdir ~/.vim
+  [ -d ~/.vim/colors ] && echo "vim colors directory already present." || mkdir ~/.vim/colors
+  [ -f ~/.vim/colors/atlantis.vim ] && echo "atlantis colorscheme already present." || cp atlantis.vim ~/.vim/colors
+  [ -f ~/.vim/colors/personal.vim ] && echo "personal colorscheme already present." || cp personal.vim ~/.vim/colors
+
+  # VUNDLE
+  if [ -d ~/.vim/bundle/Vundle.vim ]; then
+    echo "vundle directory already present."
+  else
+    git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+    vim +PluginInstall +qall
+    echo "vundle plugins installed successfully"
+  fi
+
+  # TERMINAL PROFILE
+  cd ..
+  # Load the terminal profile colorscheme
+  dconf load /org/gnome/terminal/legacy/profiles:/:1430663d-083b-4737-a7f5-8378cc8226d1/ < terminal-profile.dconf
+  cd ..
+  echo "Done"
 fi
 
 read -p "Would you like to install development tools? [Y/N] " response
@@ -44,8 +59,8 @@ if [ $response = "Y" ] || [ $response = "y" ]; then
   if [ -d ~/.tmux/plugins/tpm/ ]; then
     echo "Tmux tpm already installed."
   else
-      tpm=true
       git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+      tpm=true
   fi
   pip3 install --upgrade pip
   echo "Done"
@@ -54,29 +69,23 @@ if [ $response = "Y" ] || [ $response = "y" ]; then
   fi
 fi
 
-read -p "Would you like to copy appearance files (colorschemes, terminal profile, etc.)? [Y/N] " response
+read -p "Would you like to install system themes/appearence? [Y/N] " response
 if [ $response = "Y" ] || [ $response = "y" ]; then
-  cd appearance/colorschemes
-  [ -d ~/.vim ] && echo ".vim directory already present." || mkdir ~/.vim
-  [ -d ~/.vim/colors ] && echo "vim colors directory already present." || mkdir ~/.vim/colors
-  [ -f ~/.vim/colors/atlantis.vim ] && echo "atlantis colorscheme already present." || cp atlantis.vim ~/.vim/colors
-  [ -f ~/.vim/colors/personal.vim ] && echo "personal colorscheme already present." || cp personal.vim ~/.vim/colors
-  cd ..
-  # Load the terminal profile colorscheme
-  dconf load /org/gnome/terminal/legacy/profiles:/:1430663d-083b-4737-a7f5-8378cc8226d1/ < terminal-profile.dconf
-  cd ..
-  # Install paper icons
-  sudo add-apt-repository -u ppa:snwh/ppa
-  sudo apt install paper-icon-theme
-  # Install arc-dark theme; do this last probably
-  arctheme = "y"
+  # SYSTEM ICON THEMES (PAPER)
+  paper_ppa=snwh
+  if ! grep -q "^deb .*$paper_ppa" /etc/apt/sources.list /etc/apt/sources.list.d/*; then
+      # commands to add the ppa ...
+      sudo add-apt-repository -u ppa:snwh/ppa
+      sudo apt install paper-icon-theme
+  else
+    echo "paper repository already present"
+  fi
+
+  # Install arc-dark theme
   if [ -d ~/Downloads/arc-theme ]; then
     echo "arc-theme directory already present."
-    read -p "Would you like to still install arc-theme? [Y/N] " arctheme
   else
     git clone https://github.com/horst3180/arc-theme ~/Downloads/arc-theme --depth 1
-  fi
-  if [ $arctheme = "Y" ] || [ $arctheme = "y" ]; then
     cd ~/Downloads/arc-theme
     ./autogen.sh --prefix=/usr --with-gnome=3.22
     sudo make install
@@ -84,6 +93,17 @@ if [ $response = "Y" ] || [ $response = "y" ]; then
   fi
   echo "Done"
 fi
+
+read -p "Would you like to setup git configs (name, default editor, etc)? [Y/N] " response
+if [ $response = "Y" ] || [ $response = "y" ]; then
+  read -p "Email: " email
+  read -p "Name: " name
+  git config --global user.email $email
+  git config --global user.name $name
+  git config --global core.editor "vim"
+  echo "Done."
+fi
+
 
 # Return back to the script directory
 cd $SCRIPTPATH
