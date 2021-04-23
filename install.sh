@@ -3,19 +3,19 @@
 # To Do:
 # Fix terminal color profile not working
 
-DEVELOPMENT_APPS="vim tmux python3 python3-pip curl autoconf libgtk-3-dev automake gnome-tweaks"
+DEVELOPMENT_APPS="vim vim-gtk3 tmux python3 python3-pip curl autoconf libgtk-3-dev automake gnome-tweaks"
 SCRIPTPATH=`pwd`
 
 response=
 read -p "Would you like to fetch the latest updates? [Y/N] " response
-if [ $response = "Y" ] || [ $response = "y" ]; then
+if [[ ${response,,} = "y" ]]; then
   echo "Getting the latest updates..."
   sudo apt update
   echo "Done"
 fi
 
 read -p "Would you like to copy config scripts (.vimrc, bashrc, etc.) and appearance files (colorschemes)? [Y/N] " response
-if [ $response = "Y" ] || [ $response = "y" ]; then
+if [[ ${response,,} = "y" ]]; then
   if ! grep -Fxq "set completion-ignore-case On" /etc/inputrc; then
     echo 'set completion-ignore-case On' | sudo tee -a /etc/inputrc
   fi
@@ -48,7 +48,7 @@ if [ $response = "Y" ] || [ $response = "y" ]; then
 fi
 
 read -p "Would you like to install development tools? [Y/N] " response
-if [ $response = "Y" ] || [ $response = "y" ]; then
+if [[ ${response,,} = "y" ]]; then
   echo "Installing development tools..."
   sudo apt install -y $DEVELOPMENT_APPS
   curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
@@ -70,7 +70,7 @@ if [ $response = "Y" ] || [ $response = "y" ]; then
 fi
 
 read -p "Would you like to install system themes/appearence? [Y/N] " response
-if [ $response = "Y" ] || [ $response = "y" ]; then
+if [[ ${response,,} = "y" ]]; then
   # SYSTEM ICON THEMES (PAPER)
   paper_ppa=snwh
   if ! grep -q "^deb .*$paper_ppa" /etc/apt/sources.list /etc/apt/sources.list.d/*; then
@@ -95,7 +95,7 @@ if [ $response = "Y" ] || [ $response = "y" ]; then
 fi
 
 read -p "Would you like to setup git configs (name, default editor, etc)? [Y/N] " response
-if [ $response = "Y" ] || [ $response = "y" ]; then
+if [[ ${response,,} = "y" ]]; then
   read -p "Email: " email
   read -p "Name: " name
   git config --global user.email $email
