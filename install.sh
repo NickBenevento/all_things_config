@@ -1,6 +1,6 @@
 #!/bin/sh
 
-DEVELOPMENT_APPS="vim vim-gtk3 tmux python3 python3-pip curl autoconf libgtk-3-dev automake gnome-tweaks"
+DEVELOPMENT_APPS="git vim vim-gtk3 tmux python3 python3-pip curl autoconf libgtk-3-dev automake gnome-tweaks"
 SCRIPTPATH=`pwd`
 
 response=
@@ -10,6 +10,9 @@ if [[ ${response,,} = "y" ]]; then
   sudo apt update
   echo "Done"
 fi
+
+# git is necessary, need to install it
+sudo apt install git
 
 read -p "Would you like to copy config scripts (.vimrc, bashrc, etc.) and appearance files (colorschemes)? [Y/N] " response
 if [[ ${response,,} = "y" ]]; then
