@@ -1,6 +1,6 @@
 #!/bin/sh
 
-DEVELOPMENT_APPS="git vim vim-gtk3 tmux python3 python3-pip curl autoconf libgtk-3-dev automake gnome-tweaks"
+DEVELOPMENT_APPS="vim vim-gtk3 tmux python3 python3-pip curl autoconf libgtk-3-dev automake gnome-tweaks"
 SCRIPTPATH=`pwd`
 
 response=
@@ -22,6 +22,18 @@ if [[ ${response,,} = "y" ]]; then
   cd config_files/
   cp -r . ~/
   cd ..
+  script="y"
+  if [ -d ~/scripts ]; then
+    echo "scripts directory already present."
+    read -p "Would you like to copy the scripts over anyway (THIS WILL REPLACE THE CURRENT SCRIPTS)? [Y/N] " script
+  else
+    mkdir ~/scripts
+  fi
+  if [[ ${script,,} = "y" ]]; then
+    cd scripts/
+    cp -r . ~/scripts
+    cd ..
+  fi
 
   # VIM COLORSCHEMES
   cd appearance/colorschemes
