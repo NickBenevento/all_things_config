@@ -1,3 +1,11 @@
+# CIRCUMVENTING ALIASES:
+# Use `command [command]`, or simply, `\[command]`.
+# e.g.: 
+# `python --version`
+# => 3,8.3
+# `\python --version`
+# => 2.7.6
+
 # GENERAL
 alias ll='ls -alF'
 alias la='ls -A'
@@ -26,4 +34,6 @@ alias gotowork='cd /home/nbenevento/Documents/blackcape/grayplan/gray-plan; clea
 alias csbuild=build_cscope_db_func
 alias csbuildjava=build_cscope_db_func_java
 alias csexport=cscope_export_db_func
+
+alias python=python3
 
