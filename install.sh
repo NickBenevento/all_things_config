@@ -1,6 +1,6 @@
 #!/bin/sh
 
-DEVELOPMENT_APPS="vim vim-gtk3 tmux python3 python3-pip curl autoconf libgtk-3-dev automake gnome-tweaks"
+DEVELOPMENT_APPS="vim vim-gtk3 tmux python3 python3-pip curl autoconf libgtk-3-dev automake gnome-tweaks default-jre default-jdk"
 SCRIPTPATH=`pwd`
 
 response=
