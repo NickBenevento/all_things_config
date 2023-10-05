@@ -1,21 +1,30 @@
-#!/bin/sh
+#!/bin/bash
 
 DEVELOPMENT_APPS="vim vim-gtk3 tmux python3 python3-pip curl autoconf libgtk-3-dev automake gnome-tweaks default-jre default-jdk"
 SCRIPTPATH=`pwd`
 
 response=
-read -p "Would you like to fetch the latest updates? [Y/N] " response
-if [[ ${response,,} = "y" ]]; then
+read -p "Would you like to fetch the latest updates? [y/n] " response
+if [[ $response = "y" ]]; then
   echo "Getting the latest updates..."
   sudo apt update
   echo "Done"
 fi
 
 # git is necessary, need to install it
-sudo apt install git
+read -p "Would you like to install git? [y/n] " response
+if [[ $response = "y" ]]; then
+  echo "installing git"
+  sudo apt install git
+  echo "Done"
+fi
 
-read -p "Would you like to copy config scripts (.vimrc, bashrc, etc.) and appearance files (colorschemes)? [Y/N] " response
-if [[ ${response,,} = "y" ]]; then
+read -p "Would you like to copy config scripts (.vimrc, bashrc, etc.) and appearance files (colorschemes)? [y/n] " response
+if [[ $response = "y" ]]; then
+  if ! [ -f "/etc/inputrc" ]; then
+    echo "inputrc file not found; creating it now"
+    sudo cat > /etc/inputrc
+  fi
   if ! grep -Fxq "set completion-ignore-case On" /etc/inputrc; then
     echo 'set completion-ignore-case On' | sudo tee -a /etc/inputrc
   fi
@@ -25,11 +34,11 @@ if [[ ${response,,} = "y" ]]; then
   script="y"
   if [ -d ~/scripts ]; then
     echo "scripts directory already present."
-    read -p "Would you like to copy the scripts over anyway (THIS WILL REPLACE THE CURRENT SCRIPTS)? [Y/N] " script
+    read -p "Would you like to copy the scripts over anyway (THIS WILL REPLACE THE CURRENT SCRIPTS)? [y/n] " script
   else
     mkdir ~/scripts
   fi
-  if [[ ${script,,} = "y" ]]; then
+  if [[ $script = "y" ]]; then
     cd scripts/
     cp -r . ~/scripts
     cd ..
@@ -58,8 +67,8 @@ if [[ ${response,,} = "y" ]]; then
   echo "Done"
 fi
 
-read -p "Would you like to install development tools? [Y/N] " response
-if [[ ${response,,} = "y" ]]; then
+read -p "Would you like to install development tools (pip, tmux)? [y/n] " response
+if [[ $response = "y" ]]; then
   echo "Installing development tools..."
   sudo apt install -y $DEVELOPMENT_APPS
   curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
@@ -80,8 +89,8 @@ if [[ ${response,,} = "y" ]]; then
   fi
 fi
 
-read -p "Would you like to install system themes/appearence? [Y/N] " response
-if [[ ${response,,} = "y" ]]; then
+read -p "Would you like to install system themes/appearence? [y/n] " response
+if [[ $response = "y" ]]; then
   # SYSTEM ICON THEMES (PAPER)
   paper_ppa=snwh
   if ! grep -q "^deb .*$paper_ppa" /etc/apt/sources.list /etc/apt/sources.list.d/*; then
@@ -105,8 +114,8 @@ if [[ ${response,,} = "y" ]]; then
   echo "Done"
 fi
 
-read -p "Would you like to setup git configs (name, default editor, etc)? [Y/N] " response
-if [[ ${response,,} = "y" ]]; then
+read -p "Would you like to setup git configs (name, default editor, etc)? [y/n] " response
+if [[ $response = "y" ]]; then
   read -p "Email: " email
   read -p "Name: " name
   git config --global user.email $email
